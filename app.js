@@ -8,6 +8,9 @@
   app.use(express.static('public'));
   const wrapAsync =require("./utils/wrapAsync.js");
   const ExpressError = require("./utils/ExpressError");
+  const {listingSchema, reveiwSchema } = require("./schema.js")
+  const Review = require("./Models/review.js");
+
 
 
   const MONGO_URL = 'mongodb://127.0.0.1:27017/wanderlust';
@@ -24,6 +27,20 @@
   app.use(methodoverride("_method"));
   app.engine("ejs",ejsMate);
   app.use(express.static(path.join(__dirname,"/public")))
+
+
+//validating Reviews
+
+const validateReview = (req,res,next) =>{
+  let {error} = Review.validate(req.body);
+  if(error){
+    let errMsg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(400, errMsg);
+  }
+  else{
+    next();
+  }
+};
 
 //Index Route
   app.get("/listings", async (req,res) =>{
@@ -47,7 +64,7 @@ app.get("/listings/:id", async (req, res, next) => {
   }
 
   try {
-    const listing = await Listing.findById(id);
+    const listing = await Listing.findById(id).populate("reviews");
 
     // If the listing does not exist
     if (!listing) {
@@ -105,6 +122,42 @@ app.delete("/listings/:id", wrapAsync(async(req,res) =>{
   console.log(deletedListing);
   res.redirect("/listings")
 }));
+
+
+//Reviews
+//post route
+app.post("/listings/:id/reviews", validateReview,wrapAsync(async(req,res,next) =>{
+  let listing = await Listing.findById(req.params.id);
+  let newReview = new Review(req.body.review);
+
+  listing.reviews.push(newReview);
+
+  await newReview.save();
+  await listing.save();
+
+  console.log("new review saved");
+  res.redirect(`/listings/${listing.id}`);
+
+}));
+
+
+// Delete Review Route
+app.delete("/listings/:listingId/reviews/:reviewId", wrapAsync(async (req, res) => {
+  const { listingId, reviewId } = req.params;
+  const listing = await Listing.findById(listingId);
+
+  // Remove the review from the listing
+  listing.reviews.pull(reviewId);
+
+  // Delete the review
+  await Review.findByIdAndDelete(reviewId);
+
+  // Save the listing after removing the review
+  await listing.save();
+
+  res.redirect(`/listings/${listingId}`);
+}));
+
 
 
 
