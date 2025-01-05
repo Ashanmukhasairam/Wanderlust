@@ -33,10 +33,11 @@
 
 app.use("/listings", listings);
 app.use("/listings/:id/reviews", reviews);
+app.use("/listings/:listingId/reviews/:reviewId", reviews);
 
-app.all("*",(req,res,next) =>{
-  next(new ExpressError(404,"page not found!"));
-})
+// app.all("*",(req,res,next) =>{
+//   next(new ExpressError(404,"page not found!"));
+// });
 
   app.use((err,req,res,next) =>{
     let {statuscode =500,message="something went wrong"} = err;

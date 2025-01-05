@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const router = express.Router();
+const router = express.Router({mergeParams:true});
 const Listing = require("../Models/Listing.js");
 const wrapAsync =require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError");
