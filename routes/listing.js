@@ -33,7 +33,7 @@ router.get("/new", (req,res) =>{
 
 //show route
 router.get("/:id", async (req, res, next) => {
-  const { id } = req.params
+  const { id } = req.params;
 
   // Check if the ID is a valid MongoDB ObjectId
   if (!mongoose.Types.ObjectId.isValid(id)) {
