@@ -15,7 +15,7 @@
   const reviews = require("./routes/review.js");
 
 
-  const MONGO_URL = 'mongodb://127.0.0.1:27017/wanderlust';
+  const MONGO_URL = 'mongodb+srv://snikM1912:snikM1912@wanderlust.18okj.mongodb.net/';
 
   main().catch(err => console.log(err));
 
