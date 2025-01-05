@@ -24,6 +24,9 @@ const validateReview = (req, res, next) => {
 router.post("/", validateReview, wrapAsync(async (req, res, next) => {
     const listing = await Listing.findById(req.params.id);
     const newReview = new Review(req.body.review);
+    if (!listing) {
+        throw new ExpressError(404, "Listing not found");
+    }
 
     listing.reviews.push(newReview);
 
