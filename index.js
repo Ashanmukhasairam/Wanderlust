@@ -36,7 +36,6 @@ app.use("/listings/:id/reviews", review);
 app.use("/listings/:listingId/reviews/:reviewId", review);
 
 
-
 app.use((err, req, res, next) => {
   let { statuscode = 500 } = err;
   res.status(statuscode).render("error.ejs", { err });

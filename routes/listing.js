@@ -1,23 +1,12 @@
 const express = require("express");
+const router = express.Router({ mergeParams: true });
 const mongoose = require("mongoose");
-const router = express.Router({mergeParams:true});
 const Listing = require("../Models/Listing.js");
 const wrapAsync =require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError");
-const {listingSchema, reveiwSchema } = require("../schema.js")
+const {listingSchema, reviewSchema } = require("../schema.js")
 
 
-const validateListing = (req,res,next) =>{
-    let {error} = listingSchema.validate(req.body);
-    if(error){
-      let errMsg = error.details.map((el) => el.message).join(",");
-      throw new ExpressError(400, errMsg);
-    }
-    else{
-      next();
-    }
-  };
-  
 
 //Index Route
 router.get("/", async (req,res) =>{
@@ -73,7 +62,7 @@ router.post("/", async (req,res,next) =>{
 
 
 //Edit Route
-router.get("/:id/edit", async(req,res) =>{
+router.get("//:id/edit", async(req,res) =>{
   let {id} = req.params;
   const listing = await Listing.findById(id);
   res.render("listings/edit.ejs", {listing});
@@ -99,7 +88,5 @@ router.delete("/:id", wrapAsync(async(req,res) =>{
   console.log(deletedListing);
   res.redirect("/listings")
 }));
-
-
 
 module.exports = router;
