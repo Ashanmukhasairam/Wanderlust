@@ -14,7 +14,6 @@
   const listings = require("./routes/listing.js");
   const session = require("express-session");
   const flash = require("connect-flash");
-const exp = require("constants");
 
 
   const MONGO_URL = 'mongodb+srv://snikM1912:snikM1912@wanderlust.18okj.mongodb.net/';
@@ -43,12 +42,20 @@ const exp = require("constants");
     }
   };
 
+  app.get("/", (req,res) =>{
+    res.render("home.ejs");
+  });
+
   app.use(session(sessionOptions));
   app.use(flash());
 
-app.get("/", (req,res) =>{
-  res.render("home.ejs");
-});
+  app.use((req,res,next) =>{
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
+  });
+
+
 
 app.use("/listings",listings);
 app.use("/listings/:id/reviews",reviews);
