@@ -13,6 +13,10 @@ router.post("/signup",async(req,res)=>{
     req.flash("success","Welcome to Wanderlust");
     res.redirect("/listings");
 
-})
+});
+
+router.get("/login",(req,res)=>{
+    res.render("users/login.ejs");
+});
 
 module.exports = router;
