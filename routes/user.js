@@ -19,4 +19,8 @@ router.get("/login",(req,res)=>{
     res.render("users/login.ejs");
 });
 
+router.post("/login",(req,res)=>{
+    res.send("Login Route");
+});
+
 module.exports = router;
