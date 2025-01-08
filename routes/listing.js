@@ -5,7 +5,7 @@ const Listing = require("../Models/Listing.js");
 const wrapAsync =require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError");
 const {listingSchema, reviewSchema } = require("../schema.js")
-
+const  {isLoggedIn} = require("../middleware.js");
 
 
 //Index Route
@@ -16,12 +16,13 @@ router.get("/", async (req,res) =>{
 
 
 //new Route
-router.get("/new", (req,res) =>{
+router.get("/new",isLoggedIn, (req,res) =>{
+  
   res.render("listings/new.ejs");
 });
 
 //show route
-router.get("/:id", async (req, res, next) => {
+router.get("/:id",isLoggedIn, async (req, res, next) => {
   const { id } = req.params;
 
   // Check if the ID is a valid MongoDB ObjectId
@@ -46,7 +47,7 @@ router.get("/:id", async (req, res, next) => {
 
 
 //create route
-router.post("/", async (req,res,next) =>{
+router.post("/",isLoggedIn, wrapAsync(async (req,res,next) =>{
   try
   {
   if(!req.body.listing){
@@ -60,11 +61,11 @@ router.post("/", async (req,res,next) =>{
 }catch(err){
   next(err);
 }
-});
+}));
 
 
 //Edit Route
-router.get("/:id/edit", async(req,res) =>{
+router.get("/:id/edit",isLoggedIn, async(req,res) =>{
   let {id} = req.params;
   const listing = await Listing.findById(id);
   
@@ -82,7 +83,7 @@ router.get("/:id/edit", async(req,res) =>{
 })
 
 //Update Route
-router.put("/:id", wrapAsync(async (req,res) =>{
+router.put("/:id",isLoggedIn, wrapAsync(async (req,res) =>{
   if(!req.body.listing){
     throw new ExpressError(400,"send valid data for listing");
   }
@@ -94,7 +95,7 @@ router.put("/:id", wrapAsync(async (req,res) =>{
 
 
 //Delete Route
-router.delete("/:id", wrapAsync(async(req,res) =>{
+router.delete("/:id",isLoggedIn, wrapAsync(async(req,res) =>{
   let {id} =  req.params;
   let deletedListing = await Listing.findByIdAndDelete(id);
   console.log(deletedListing);

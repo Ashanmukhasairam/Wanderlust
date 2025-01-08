@@ -99,3 +99,41 @@
     ;
     border: none !important;
 }
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    flex: 1; /* Ensures the main content takes up the available space */
+}
+
+/* Footer styling */
+.fixed-footer {
+    background-color: #f8f9fa; /* Optional: Footer background color */
+    padding: 10px 0;
+    text-align: center;
+    border-top: 1px solid #dee2e6;
+    position: relative; /* Change from sticky/fixed to avoid overlap issues */
+    bottom: 0;
+    width: 100%;
+}
+
+/* Optional: Styling for footer links and icons */
+.f-info-socials i {
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.f-info-links a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.f-info-links a:hover {
+    text-decoration: underline;
+}
