@@ -11,7 +11,7 @@ const listings = require("./routes/listing.js");
 const review = require("../Wanderlust/routes/review.js");
 
 
-
+const 
 
 const app = express();
 app.use(express.static('public'));
@@ -34,6 +34,9 @@ app.use(express.static(path.join(__dirname, "/public")))
 app.use("/listings", listings);
 app.use("/listings/:id/reviews", review);
 app.use("/listings/:listingId/reviews/:reviewId", review);
+app.all("*", (req, res, next) => {
+  next(new ExpressError(404, "Page not found!"));
+});
 
 
 
