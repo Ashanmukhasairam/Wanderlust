@@ -16,7 +16,7 @@
   const LocalStrategy = require("passport-local");
   const User = require("./Models/user.js");
 
-  const listingROuter = require("./routes/listing.js");
+  const listingRouter = require("./routes/listing.js");
   const reviewRouter =  require("./routes/review.js");
   const userRouter =  require("./routes/user.js");
   
@@ -68,26 +68,27 @@
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     res.locals.currUser = req.user;
+    
     next();
   });
 
 
-  app.get("/demouser", async (req, res) => {
-    try {
-      let fakeuser = new User({
-        email: "student@gmail.com",
-        username: "stud@1233232"
-      });
+  // app.get("/demouser", async (req, res) => {
+  //   try {
+  //     let fakeuser = new User({
+  //       email: "student@gmail.com",
+  //       username: "stud@1233232"
+  //     });
   
-      let registeredUser = await User.register(fakeuser, "student");
-      res.send(registeredUser);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send("An error occurred during registration.");
-    }
-  });
+  //     let registeredUser = await User.register(fakeuser, "student");
+  //     res.send(registeredUser);
+  //   } catch (err) {
+  //     console.error(err);
+  //     res.status(500).send("An error occurred during registration.");
+  //   }
+  // });
 
-  app.use("/listings",listingROuter);
+  app.use("/listings",listingRouter);
   app.use("/listings/:id/reviews",reviewRouter);
   app.use("/listings/:listingId/reviews/:reviewId",reviewRouter);
   app.use("/",userRouter);

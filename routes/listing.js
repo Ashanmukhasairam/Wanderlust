@@ -3,6 +3,7 @@ const router = express.Router({ mergeParams: true });
 const mongoose = require("mongoose");
 const Listing = require("../Models/Listing.js");
 const wrapAsync = require("../utils/wrapAsync.js");
+const ExpressError = require("../utils/ExpressError");
 const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
 
 //Index Route
@@ -27,7 +28,12 @@ router.get("/:id", async (req, res, next) => {
 
   try {
     const listing = await Listing.findById(id)
-      .populate("reviews")
+      .populate({
+        path: "reviews",
+        populate: {
+          path: "author",
+        },
+      })
       .populate("owner");
 
     // If the listing does not exist
@@ -64,7 +70,7 @@ router.post(
 );
 
 //Edit Route
-router.get("/:id/edit", isLoggedIn,isOwner, async (req, res) => {
+router.get("/:id/edit", isLoggedIn, isOwner, async (req, res) => {
   let { id } = req.params;
   const listing = await Listing.findById(id);
 
@@ -98,7 +104,8 @@ router.put(
 //Delete Route
 router.delete(
   "/:id",
-  isLoggedIn,isOwner,
+  isLoggedIn,
+  isOwner,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
