@@ -1,5 +1,6 @@
 const Listing = require("../Models/Listing");
 const mongoose = require("mongoose");
+const ExpressError = require("../utils/ExpressError");
 
 module.exports.index = async (req, res) => {
   const allListings = await Listing.find({});
@@ -11,13 +12,10 @@ module.exports.renderNewForm = async (req, res) => {
 };
 
 module.exports.showListing = async (req, res, next) => {
-  const { id } = req.params;
+  let  { id } = req.params;
+  console.log(id);
 
-  // Check if the ID is a valid MongoDB ObjectId
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return next(new ExpressError(400, "Invalid ID format"));
-  }
-
+  const listing = await Listing.findById(id)  
   try {
     const listing = await Listing.findById(id)
       .populate({
@@ -41,12 +39,14 @@ module.exports.showListing = async (req, res, next) => {
 };
 
 module.exports.createListing = async (req, res, next) => {
+  const { id } = req.params;
   try {
     if (!req.body.listing) {
       throw new ExpressError(400, "send valid data for listing");
     }
 
     const newListing = new Listing(req.body.listing);
+    console.log(req.user._id);
     newListing.owner = req.user._id;
     await newListing.save();
     req.flash("success", "Successfully made a new listing!");
