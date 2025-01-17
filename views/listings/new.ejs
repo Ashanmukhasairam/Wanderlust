@@ -33,12 +33,9 @@
       </div>
 
       <div class="mb-3">
-        <label for="image" class="form-label" class="form-label"
-          >Upload Image</label
-        >
+        <label for="image" class="form-label">Upload Image</label>
         <input
           name="listing[image]"
-          
           type="file"
           class="form-control"
         />
@@ -46,22 +43,17 @@
 
       <div class="row">
         <div class="mb-3 col-md-4">
-          <label for="price" class="form-label" class="form-label">
-            Price</label
-          >
+          <label for="price" class="form-label">Price</label>
           <input
             name="listing[price]"
             placeholder="enter price"
             type="number"
             class="form-control"
           />
-          <!-- <div class="invalid-feedback">Please enter a valid price.</div> -->
         </div>
 
         <div class="mb-3 col-md-8">
-          <label for="country" class="form-label" class="form-label"
-            >Country</label
-          >
+          <label for="country" class="form-label">Country</label>
           <input
             name="listing[country]"
             placeholder="enter country"
@@ -73,10 +65,38 @@
         </div>
       </div>
 
+      <!-- Category Dropdown -->
       <div class="mb-3">
-        <label for="location" class="form-label" class="form-label"
-          >Location</label
+        <label for="category" class="form-label">Category</label>
+        <select
+          name="listing[category]"
+          class="form-control"
+          required
         >
+          <option value="" disabled selected>Select a category</option>
+          <% const filters = [
+               "trending", 
+               "rooms", 
+               "iconic-cities", 
+               "mountains", 
+               "amazing-pools", 
+               "camping", 
+               "farms", 
+               "arctic", 
+               "beaches", 
+               "hotels"
+             ]; 
+          %>
+          <% filters.forEach(filter => { %>
+            <option value="<%= filter %>"><%= filter %></option>
+          <% }); %>
+        </select>
+        <div class="invalid-feedback">Please select a category.</div>
+      </div>
+      
+
+      <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
         <input
           name="listing[location]"
           placeholder="enter Location"

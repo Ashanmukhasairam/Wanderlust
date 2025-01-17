@@ -1,4 +1,9 @@
 <% layout("/layouts/boilerplate.ejs") %>
+<script>
+  const mapToken ="<%= process.env.MAP_TOKEN %>";
+  const listing =<%- JSON.stringify(listing) %>;
+  
+</script>
 <div class="row">
   <div class="col-8 offset-3">
     <h3><b><%= listing.title %></b> <br /></h3>
@@ -9,7 +14,7 @@
   >
     <!-- Image with increased height and current width -->
     <img
-      src="<%= listing.image %>"
+      src="<%= listing.image.url %>"
       class="card-img-top show-img"
       alt="listing_image"
       style="
@@ -41,7 +46,6 @@
     </form>
   </div>
   <% } %>
-
   <div class="col-8 offset-3 mb-3">
     <% if(currUser){ %>
     <h4>Leave a Review</h4>
@@ -123,9 +127,9 @@
     <% } %>
     <hr />
 
-    <p><b>All Reviews</b></p>
-
+    <% if(listing.reviews.length > 0) { %> 
     <div class="row">
+      <p><b>All Reviews</b></p>
       <% for(review of listing.reviews){%>
       <div class="card col-5 ms-3 mb-3 position-relative">
         <div class="position-absolute top-0 end-0 p-2">
@@ -149,6 +153,12 @@
       </div>
       <% } %>
     </div>
+    <% } %>
   </div>
-  <br />
+  <div class="col-8 offset-3 mb-3">
+    <h3>Where you will be</h3>
+    <div id="map"></div>
+  </div>
 </div>
+
+<script src="/js/map.js"></script>

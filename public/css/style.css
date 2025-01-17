@@ -137,3 +137,10 @@ body {
 .f-info-links a:hover {
     text-decoration: underline;
 }
+
+
+#map { 
+    height: 400px;
+    width: 80vh;
+}
+

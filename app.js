@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV != "production") {
+  require("dotenv").config();
+}
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -43,9 +47,9 @@ const sessionOptions = {
   },
 };
 
-app.get("/", (req, res) => {
-  res.render("home.ejs");
-});
+// app.get("/", (req, res) => {
+//   res.send("hello from the root route");
+// });
 
 //session and flash
 app.use(session(sessionOptions));

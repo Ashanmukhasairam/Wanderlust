@@ -1,38 +1,115 @@
 <% layout("/layouts/boilerplate.ejs") %>
-    <h3 class="mb-3">All Listings</h3>
-    <!-- <form action="/listings/new" method="get">
-        <button>create new listing</button>
-    </form> -->
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+<style>
+  .listing-card {
+    width: 25rem;
+    margin: 10px;
+  }
+  #filters{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .filter{
+    text-align: center ;
+    margin-right: 2rem;
+    margin-top: 2rem;
+    opacity: 0.8;
+  }
+  .filter:hover{
+    opacity: 1;
+    cursor: pointer;
+    
+  }
+  .active-filter {
+    opacity: 1; /* Full opacity for active filter */
+  }
+  .filter p{
+    font-size : 0.9rem
+  }
+</style>
 
-    <% for(let listing of allListings) { %>
-      <a href="/listings/<%= listing._id %>" class="listing-link">
-    <div class="card col listing-card" style="width: 20rem" >
-        <img
+<div id="filters">
+  <div class="filter" data-category="trending" onclick="filterListings('trending')">
+    <div><i class="fa-solid fa-fire"></i></div>
+    <p>Trending</p>
+  </div>
+  <div class="filter " data-category="rooms" onclick="filterListings('rooms')">
+    <div><i class="fa-solid fa-bed"></i></div>
+    <p>Rooms</p>
+  </div>
+  <div class="filter" data-category="iconic-cities" onclick="filterListings('iconic-cities')">
+    <div><i class="fa-solid fa-city"></i></div>
+    <p>Iconic cities</p>
+  </div>
+  <div class="filter" data-category="mountains" onclick="filterListings('mountains')">
+    <div><i class="fa-solid fa-mountain"></i></div>
+    <p>Mountains</p>
+  </div>
+  <div class="filter" data-category="amazing-pools" onclick="filterListings('amazing-pools')">
+    <div><i class="fa-solid fa-person-swimming"></i></div>
+    <p>Amazing pools</p>
+  </div>
+  <div class="filter" data-category="camping" onclick="filterListings('camping')">
+    <div><i class="fa-solid fa-tree"></i></div>
+    <p>Camping</p>
+  </div>
+  <div class="filter" data-category="farms" onclick="filterListings('farms')">
+    <div><i class="fa-solid fa-tractor"></i></div>
+    <p>Farms</p>
+  </div>
+  <div class="filter" data-category="arctic" onclick="filterListings('arctic')">
+    <div><i class="fa-regular fa-snowflake"></i></div>
+    <p>Arctic</p>
+  </div>
+  <div class="filter" data-category="beaches" onclick="filterListings('beaches')">
+    <div><i class="fa-solid fa-umbrella-beach"></i></div>
+    <p>Beaches</p>
+  </div>
+  <div class="filter" data-category="hotels" onclick="filterListings('hotels')">
+    <div><i class="fa-solid fa-hotel"></i></div>
+    <p>Hotels</p>
+  </div>
+  
+
+</div>
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+  <% for(let listing of allListings) { %>
+  <a
+    href="/listings/<%= listing._id %>"
+    class="listing-link"
+    style="text-decoration: none"
+  >
+    <div class="card col listing-card" style="width: 25rem">
+      <img
         class="card-img-top"
-        src="<%= listing.image %>"
+        src="<%= listing.image.url %>"
         alt="listing_image"
-        style = "height: 20rem;"
-        />
-
-        <div class="card-img-overlay"></div>
-        <div class="card-body">
-          <p class="card-text">
-            <b><%= listing.title %></b> <br>
-            &#8377; <%= listing.price %>/day
-          </p>
-        </div>
+        style="height: 20rem"
+      />
+      <div class="card-body">
+        <p class="card-text">
+          <b><%= listing.title %></b> <br />
+          &#8377; <%= listing.price %>/day
+        </p>
       </div>
-    </a>
-      <% } %>     
     </div>
-
-<!-- 
-    <ul>
-        <% for(let listing of allListings) { %>
-            <li><a href="/listings/<%=listing._id %>"><%= listing.title %></a></li>
-        <% } %>
-    </ul>
-     -->
-
-
+  </a>
+  <% } %>
+</div>
+<script>
+  function filterListings(category) {
+    window.location.href = `/listings?category=${category}`;
+    // Remove the active class from all filters
+    const filters = document.querySelectorAll('.filter');
+    console.log(filters);
+    filters.forEach(filter => filter.classList.remove('active-filter'));
+  
+    // Add the active class to the clicked filter
+    const clickedFilter = document.querySelector(`.filter[data-category="${category}"]`);
+    if (clickedFilter) {
+      clickedFilter.classList.add('active-filter');
+    }
+  
+    // Add your filtering logic here
+    console.log(`Filtering listings by category: ${category}`);
+  }
+</script>

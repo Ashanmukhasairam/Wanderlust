@@ -1,50 +1,119 @@
 <% layout("/layouts/boilerplate.ejs") %>
 <div class="row">
-    <div class="col-8 offset-2">
-
- 
+  <div class="col-8 offset-2">
     <h3 class="mt-3">Edit your listing</h3>
-    <form action="/listings/<%= listing._id %>?_method=put" method="post" novalidate class="needs-validation">
-        <div class="mg-3">
-            <label for="title" class="form-label">Title</label>
-            <input name="listing[title]" value="<%= listing.title %>" type="text" class="form-control" required>
-            <div class="invalid-feedback">Please enter Title</div>
-        </div>
-        
-        <div class="mg-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea name="listing[description]" class="form-control" required><%= listing.description %></textarea>
-            <div class="invalid-feedback">Please enter a short description.</div>
-        </div>
-        
-        <div class="mg-3">
-            <label for="image" class="form-label">Image</label>
-            <input name="listing[image]" value="<%= listing.image%>" type="text" class="form-control" required>
-            <div class="invalid-feedback">Please enter a valid URL.</div>
-        </div>
-        <div class="row">
+    <form
+      action="/listings/<%= listing._id %>?_method=put"
+      method="post"
+      novalidate
+      class="needs-validation"
+      enctype="multipart/form-data"
+    >
+      <div class="mg-3">
+        <label for="title" class="form-label">Title</label>
+        <input
+          name="listing[title]"
+          value="<%= listing.title %>"
+          type="text"
+          class="form-control"
+          required
+        />
+        <div class="invalid-feedback">Please enter Title</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea name="listing[description]" class="form-control" required>
+<%= listing.description %></textarea>
+        <div class="invalid-feedback">Please enter a short description.</div>
+      </div>
+
+      <div class="mb-3 preview">
+        <img src="<%= originalImageUrl %>" alt="Image Preview">
+      </div>
+
+      <div class="mg-3">
+        <label for="image" class="form-label">Upload New Image</label>
+        <input
+          name="listing[image]"
+          type="file"
+          class="form-control"
+        />
+      </div>
+
+      <div class="row">
         <div class="mg-3 col-4">
-            <label for="price" class="form-label">Price</label>
-            <input name="listing[price]" value="<%= listing.price %>" type="number" class="form-control">
-            <div class="invalid-feedback">Please enter price.</div>
+          <label for="price" class="form-label">Price</label>
+          <input
+            name="listing[price]"
+            value="<%= listing.price %>"
+            type="number"
+            class="form-control"
+          />
+          <div class="invalid-feedback">Please enter price.</div>
         </div>
-        
+
         <div class="mg-3 col-8">
-            <label for="country" class="form-label">Country</label>
-            <input name="listing[country]" value="<%= listing.country %>" type="text" class="form-control" required>
-            <div class="invalid-feedback">Please enter country name.</div>
+          <label for="country" class="form-label">Country</label>
+          <input
+            name="listing[country]"
+            value="<%= listing.country %>"
+            type="text"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Please enter country name.</div>
         </div>
-    </div>
-        
-        <div class="mg-3">
-            <label for="location" class="form-label">Location</label>
-            <input name="listing[location]" value="<%= listing.location %>" type="text" class="form-control" required>
-            <div class="invalid-feedback">Please enter a valid location.</div>
-        </div>
-        
-       <br><br>
-        <button class="btn btn-dark edit-btn">Edit</button>
-        <br><br>
+      </div>
+
+      <div class="mg-3">
+        <label for="location" class="form-label">Location</label>
+        <input
+          name="listing[location]"
+          value="<%= listing.location %>"
+          type="text"
+          class="form-control"
+          required
+        />
+        <div class="invalid-feedback">Please enter a valid location.</div>
+      </div>
+
+      <!-- Category Section -->
+      <div class="mg-3">
+        <label for="category" class="form-label">Category</label>
+        <select name="listing[category]" class="form-control" required>
+          <option value="trending" <%= listing.category === 'trending' ? 'selected' : '' %>>Trending</option>
+          <option value="rooms" <%= listing.category === 'rooms' ? 'selected' : '' %>>Rooms</option>
+          <option value="iconic cities" <%= listing.category === 'iconic cities' ? 'selected' : '' %>>Iconic cities</option>
+          <option value="mountains" <%= listing.category === 'mountains' ? 'selected' : '' %>>Mountains</option>
+          <option value="amazing pools" <%= listing.category === 'amazing pools' ? 'selected' : '' %>>Amazing pools</option>
+          <option value="camping" <%= listing.category === 'camping' ? 'selected' : '' %>>Camping</option>
+          <option value="farms" <%= listing.category === 'farms' ? 'selected' : '' %>>Farms</option>
+          <option value="arctic" <%= listing.category === 'arctic' ? 'selected' : '' %>>Arctic</option>
+          <option value="beaches" <%= listing.category === 'beaches' ? 'selected' : '' %>>Beaches</option>
+          <option value="hotels" <%= listing.category === 'hotels' ? 'selected' : '' %>>Hotels</option>
+        </select>
+        <div class="invalid-feedback">Please select a category.</div>
+      </div>
+
+      <br /><br />
+      <button class="btn btn-dark edit-btn">Edit</button>
+      <br /><br />
     </form>
+  </div>
 </div>
-</div>
+
+<style>
+  .preview {
+    height: 200px; /* Set the desired height for the preview */
+    overflow: hidden;
+    border-radius: 15px; /* Hide overflow for a cropped preview */
+  }
+
+  .preview img {
+    width: auto; /* Maintain aspect ratio */
+    height: 100%; /* Adjust the image to fill the height of the div */
+    object-fit: cover;
+    border-radius: 15px; /* Ensure the image covers the div while cropping excess parts */
+  }
+</style>
