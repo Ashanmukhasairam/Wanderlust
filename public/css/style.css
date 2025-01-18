@@ -84,6 +84,9 @@
     ;
     border: none !important;
 }
+.container {
+    flex : 1;
+}
 
 .show-img{
     height: 30vh;
